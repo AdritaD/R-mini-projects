@@ -1,0 +1,93 @@
+#a)read file college.csv
+college<-read.csv("C:/Users/adrit/Desktop/utd/sem2/stats for ds/project/PROJ2/College.csv");
+
+#b)
+#fix file, see the look of it
+fix(college);
+
+#now we set names to each row(R will not perform any operations on row names:)
+#extra column for row name added for each row
+rownames(college)<-college[,1];
+
+#see the look of the table again(this time with an extra column for names)
+fix(college);
+
+#now that we have 2 columns with uni name, delete 1
+#delete the original 1 as calculations can be done on that.
+college<-college[,-1];
+
+#see table again:
+fix(college);
+
+
+#c)
+#i)summary of data set(MIN,Q1,Q2,MEAN,Q3,MAX)
+summary(college);
+
+
+#ii)scatterplot matrix of first 10 columns:
+pairs(college[,1:10]);
+
+#iii)side by side boxplots of Outstate vs Private
+plot(college$Outstate,college$Private)
+boxplot(college$Outstate,college$Private)
+
+
+#iv)creating Elite(top 10 percentile)
+Elite=rep("No",nrow(college))
+Elite[college$Top10perc>50]="Yes"
+Elite=as.factor(Elite)
+college=data.frame(college,Elite)
+
+
+#summary of Elite universities
+summary(college$Elite)
+
+#boxplots of outstate vs Elite
+plot(college$Outstate,college$Elite)
+boxplot(college$Outstate,college$Elite)
+
+
+#v)histograms of a few variables with different bin size
+#dividing display page 
+par(mfrow=c(2,2))
+
+#histogram of romm and board costs
+hist(college$Room.Board)
+
+#histogram of PhD students
+hist(college$PhD, col=4, breaks = 2)
+
+#histogram of student faculty ratio
+hist(college$S.F.Ratio, breaks =100)
+
+#histogram of top 25 percentile
+hist(college$Top25perc, col=2)
+
+
+
+#vi)doing other experiments on data:
+#boxplot of no of acceptances and graduation rate
+#we see here the higher the acceptance, graduation rate has lesser variance)
+par(mfrow=c(1,2))
+plot(college$Accept, college$Grad.Rate)
+boxplot(college$Accept, college$Grad.Rate)
+
+
+#boxplot of applicant no vs percentage of faculty with PHD
+#more applicants if more number of faculty have phd
+plot(college$PhD, college$Apps)
+boxplot(college$PhD, college$Apps)
+
+
+#boxplot of Enroll and Books
+#more variance in costs of books when lesser students enrolled
+plot(college$Enroll, college$Books)
+boxplot(college$Enroll, college$Books)
+
+
+#personal exp vs percentage of alumni who donate
+#as personal expenses increase donations have lower variance and thus lower average values.
+#if they spent less in college they are more likely to donate
+plot(college$Personal, college$perc.alumni)
+boxplot(college$Personal, college$perc.alumni)
